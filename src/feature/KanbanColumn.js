@@ -22,6 +22,15 @@ const KanbanItemText = styled.p`
 
 const KanbanItemDeleteButton = styled.button`
   margin-top: 0.5rem;
+  padding: 0.5rem;
+  border: none;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f44336;
+      color: #fff;
+
+  }
 `;
 
 const KanbanItemInput = styled.input`
@@ -60,7 +69,7 @@ const KanbanColumn = ({ column, columnId, addItem, deleteItem }) => {
       </Droppable>
       <KanbanItemInput
         type="text"
-        placeholder="Add item..."
+        placeholder="Add Task..."
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             addItem(columnId, { id: Date.now().toString(), text: e.target.value });

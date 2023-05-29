@@ -18,7 +18,28 @@ const initialState = {
   },
 };
 
-const kanbanReducer = (state = initialState, action) => {
+const loadStateFromLocalStorage = () => {
+  try {
+    const serializedState = localStorage.getItem('kanbanState');
+    if (serializedState === null) {
+      return initialState;
+    }
+    return JSON.parse(serializedState);
+  } catch (err) {
+    return initialState;
+  }
+};
+
+const saveStateToLocalStorage = (state) => {
+  try {
+    const serializedState = JSON.stringify(state);
+    localStorage.setItem('kanbanState', serializedState);
+  } catch (err) {
+    // Handle localStorage error
+  }
+};
+
+const kanbanReducer = (state = loadStateFromLocalStorage(), action) => {
   switch (action.type) {
     case 'MOVE_ITEM': {
       const { source, destination } = action.payload;
@@ -44,10 +65,14 @@ const kanbanReducer = (state = initialState, action) => {
         },
       };
 
-      return {
+      const newState = {
         ...state,
         columns: updatedColumns,
       };
+
+      saveStateToLocalStorage(newState);
+
+      return newState;
     }
     case 'ADD_ITEM': {
       const { columnId, item } = action.payload;
@@ -61,10 +86,14 @@ const kanbanReducer = (state = initialState, action) => {
         ...state.columns,
         [columnId]: updatedColumn,
       };
-      return {
+      const newState = {
         ...state,
         columns: updatedColumns,
       };
+
+      saveStateToLocalStorage(newState);
+
+      return newState;
     }
     case 'DELETE_ITEM': {
       const { columnId, itemId } = action.payload;
@@ -78,15 +107,18 @@ const kanbanReducer = (state = initialState, action) => {
         ...state.columns,
         [columnId]: updatedColumn,
       };
-      return {
+      const newState = {
         ...state,
         columns: updatedColumns,
       };
+
+      saveStateToLocalStorage(newState);
+
+      return newState;
     }
     default:
       return state;
   }
 };
-
 
 export default kanbanReducer;

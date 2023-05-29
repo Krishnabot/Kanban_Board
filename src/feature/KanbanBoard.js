@@ -13,6 +13,15 @@ const KanbanBoard = () => {
   const columns = useSelector((state) => state.columns);
   const dispatch = useDispatch();
 
+  const saveStateToLocalStorage = (state) => {
+    try {
+      const serializedState = JSON.stringify(state);
+      localStorage.setItem('kanbanState', serializedState);
+    } catch (err) {
+      // Handle localStorage error
+    }
+  };
+
   const handleDragEnd = (result) => {
     const { source, destination } = result;
     if (!destination) return;
