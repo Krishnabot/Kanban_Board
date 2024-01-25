@@ -43,6 +43,11 @@ const kanbanReducer = (state = loadStateFromLocalStorage(), action) => {
   switch (action.type) {
     case 'MOVE_ITEM': {
       const { source, destination } = action.payload;
+
+      if (source.droppableId === destination.droppableId) {
+        return state; 
+      }
+
       const sourceColumn = { ...state.columns[source.droppableId] };
       const destinationColumn = { ...state.columns[destination.droppableId] };
       const removed = sourceColumn.items[source.index];
