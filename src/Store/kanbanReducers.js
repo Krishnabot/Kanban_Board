@@ -35,7 +35,6 @@ const saveStateToLocalStorage = (state) => {
     const serializedState = JSON.stringify(state);
     localStorage.setItem('kanbanState', serializedState);
   } catch (err) {
-    // Handle localStorage error
   }
 };
 
